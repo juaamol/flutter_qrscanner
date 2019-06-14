@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_qrscanner/src/pages/locations.page.dart';
 import 'package:flutter_qrscanner/src/pages/maps.page.dart';
+import 'package:qrcode_reader/qrcode_reader.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -26,12 +27,14 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: _createBottomNavBar(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.filter_center_focus),
-        onPressed: () {},
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-    );
-  }
-
+        onPressed: _scanQR,
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
+            );
+          }
+        
+          
+        
   Widget _createBottomNavBar() {
     return BottomNavigationBar(
       currentIndex: currentIndex,
@@ -57,5 +60,22 @@ class _HomePageState extends State<HomePage> {
       default:
         return MapsPage();
     }
+  }
+
+  void _scanQR() async {
+    // https://github.com/juaamol/flutter_qrscanner
+    // geo:40.714865545932355,-73.96474256953127
+    String futureString;
+
+    try {
+      futureString = await new QRCodeReader().scan();
+    } catch(e) {
+      futureString = e.toString();
+    }
+
+    if(futureString != null) {
+      print('QR: $futureString');
+    }
+    print('THINGS');
   }
 }
