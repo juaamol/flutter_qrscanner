@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_qrscanner/src/pages/locations.page.dart';
 import 'package:flutter_qrscanner/src/pages/maps.page.dart';
+import 'package:flutter_qrscanner/src/providers/db.service.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 
 class HomePage extends StatefulWidget {
@@ -45,8 +46,8 @@ class _HomePageState extends State<HomePage> {
       },
       items: [
         BottomNavigationBarItem(
-            icon: Icon(Icons.map), title: Text('Locations')),
-        BottomNavigationBarItem(icon: Icon(Icons.map), title: Text('Locations'))
+            icon: Icon(Icons.map), title: Text('Maps')),
+        BottomNavigationBarItem(icon: Icon(Icons.directions), title: Text('Locations'))
       ],
     );
   }
@@ -65,17 +66,21 @@ class _HomePageState extends State<HomePage> {
   void _scanQR() async {
     // https://github.com/juaamol/flutter_qrscanner
     // geo:40.714865545932355,-73.96474256953127
-    String futureString;
+    String futureString = 'https://github.com/juaamol/flutter_qrscanner';
 
-    try {
-      futureString = await new QRCodeReader().scan();
-    } catch(e) {
-      futureString = e.toString();
-    }
+    // try {
+    //   futureString = await new QRCodeReader().scan();
+    // } catch(e) {
+    //   futureString = e.toString();
+    // }
 
     if(futureString != null) {
-      print('QR: $futureString');
+      final newScan = ScanModel(value: futureString);
+      DBProvider.db.newScan(newScan);
     }
     print('THINGS');
+    setState(() {
+      
+    });
   }
 }

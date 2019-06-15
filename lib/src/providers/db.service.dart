@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_qrscanner/src/models/scan.model.dart';
+export 'package:flutter_qrscanner/src/models/scan.model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -13,10 +14,12 @@ class DBProvider {
 
   get database async {
     if (_database != null) {
-      return db;
+      return _database;
     }
 
     _database = await initDB();
+
+    return _database;
   }
 
   initDB() async {
@@ -51,7 +54,7 @@ class DBProvider {
     final db = await database;
     final res = await db.query('Scans');
     List<ScanModel> list = res.isNotEmpty
-        ? res.map((scan) => ScanModel.fromJson(scan)).toList()
+        ? res.map<ScanModel>((scan) => ScanModel.fromJson(scan)).toList()
         : [];
     return list;
   }
