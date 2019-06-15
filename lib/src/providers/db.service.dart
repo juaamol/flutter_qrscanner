@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_qrscanner/src/models/scan.model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -28,5 +29,13 @@ class DBProvider {
           'CREATE TABLE Scans(id INTEGER PRIMARY KEY, type TEXT, value TEXT)';
       await db.execute(sql);
     });
+  }
+
+  // Create rows
+  newScan(ScanModel newScan) async{
+    final db = await database;
+    final res = db.insert('Scans', newScan.toJson());
+
+    return res;
   }
 }
