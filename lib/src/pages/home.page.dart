@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_qrscanner/src/bloc/scans.bloc.dart';
+import 'package:flutter_qrscanner/src/models/scan.model.dart';
 import 'package:flutter_qrscanner/src/pages/locations.page.dart';
 import 'package:flutter_qrscanner/src/pages/maps.page.dart';
-import 'package:flutter_qrscanner/src/providers/db.service.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final scansBloc = new ScansBloc();
   int currentIndex = 0;
 
   @override
@@ -20,7 +22,7 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete_forever),
-            onPressed: () {},
+            onPressed: scansBloc.deleteAllScans,
           )
         ],
       ),
@@ -29,13 +31,11 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.filter_center_focus),
         onPressed: _scanQR,
-                backgroundColor: Theme.of(context).primaryColor,
-              ),
-            );
-          }
-        
-          
-        
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+    );
+  }
+
   Widget _createBottomNavBar() {
     return BottomNavigationBar(
       currentIndex: currentIndex,
@@ -45,9 +45,9 @@ class _HomePageState extends State<HomePage> {
         });
       },
       items: [
+        BottomNavigationBarItem(icon: Icon(Icons.map), title: Text('Maps')),
         BottomNavigationBarItem(
-            icon: Icon(Icons.map), title: Text('Maps')),
-        BottomNavigationBarItem(icon: Icon(Icons.directions), title: Text('Locations'))
+            icon: Icon(Icons.directions), title: Text('Locations'))
       ],
     );
   }
@@ -74,13 +74,9 @@ class _HomePageState extends State<HomePage> {
     //   futureString = e.toString();
     // }
 
-    if(futureString != null) {
+    if (futureString != null) {
       final newScan = ScanModel(value: futureString);
-      DBProvider.db.newScan(newScan);
+      scansBloc.addScan(newScan);
     }
-    print('THINGS');
-    setState(() {
-      
-    });
   }
 }

@@ -36,7 +36,7 @@ class ScansBloc {
   }
   
   deleteAllScans() async {
-    await DBProvider.db.getAllScans();
+    await DBProvider.db.deleteAll();
     obtainScans();
   }
 }
