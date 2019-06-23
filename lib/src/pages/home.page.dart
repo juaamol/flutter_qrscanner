@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_qrscanner/src/bloc/scans.bloc.dart';
 import 'package:flutter_qrscanner/src/models/scan.model.dart';
 import 'package:flutter_qrscanner/src/pages/locations.page.dart';
 import 'package:flutter_qrscanner/src/pages/maps.page.dart';
+import 'package:flutter_qrscanner/src/utils/scans.util.dart' as utils;
 import 'package:qrcode_reader/qrcode_reader.dart';
 
 class HomePage extends StatefulWidget {
@@ -77,6 +80,15 @@ class _HomePageState extends State<HomePage> {
     if (futureString != null) {
       final newScan = ScanModel(value: futureString);
       scansBloc.addScan(newScan);
+
+      final newScan2 = ScanModel(value: 'geo:40.714865545932355,-73.96474256953127');
+      scansBloc.addScan(newScan2);
+
+      if (Platform.isIOS) {
+        Future.delayed(Duration(milliseconds: 750));
+      }
+      utils.openScan(newScan);
+      print('???');
     }
   }
 }
