@@ -10,6 +10,7 @@ openScan(BuildContext context, ScanModel scan) async {
       throw 'Could not launch ${scan.value}';
     }
   } else {
-    Navigator.pushNamed(context, 'maps', arguments: scan);
+    print('naps');
+    Navigator.pushNamed(context, 'map', arguments: scan);
   }
 }

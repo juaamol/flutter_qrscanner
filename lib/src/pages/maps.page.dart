@@ -27,7 +27,7 @@ class MapsPage extends StatelessWidget {
 
         return ListView.builder(
             itemCount: scans.length,
-            itemBuilder: (context, i) => Dismissible(
+            itemBuilder: (BuildContext context, int i) => Dismissible(
                   key: UniqueKey(),
                   background: Container(color: Colors.red),
                   onDismissed: (direction) => scansBloc.deleteScan(scans[i].id),
