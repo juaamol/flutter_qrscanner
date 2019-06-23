@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: _createBottomNavBar(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.filter_center_focus),
-        onPressed: _scanQR,
+        onPressed: () => _scanQR(context),
         backgroundColor: Theme.of(context).primaryColor,
       ),
     );
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _scanQR() async {
+  void _scanQR(BuildContext context) async {
     // https://github.com/juaamol/flutter_qrscanner
     // geo:40.714865545932355,-73.96474256953127
     String futureString = 'https://github.com/juaamol/flutter_qrscanner';
@@ -81,14 +81,17 @@ class _HomePageState extends State<HomePage> {
       final newScan = ScanModel(value: futureString);
       scansBloc.addScan(newScan);
 
-      final newScan2 = ScanModel(value: 'geo:40.714865545932355,-73.96474256953127');
+      final newScan2 =
+          ScanModel(value: 'geo:40.714865545932355,-73.96474256953127');
       scansBloc.addScan(newScan2);
 
       if (Platform.isIOS) {
-        Future.delayed(Duration(milliseconds: 750));
+        Future.delayed(Duration(milliseconds: 750), () {
+          utils.openScan(context, newScan);
+        });
+      } else {
+        //utils.openScan(context, newScan);
       }
-      utils.openScan(newScan);
-      print('???');
     }
   }
 }
