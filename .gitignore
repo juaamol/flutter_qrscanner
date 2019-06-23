@@ -9,6 +9,9 @@
 .history
 .svn/
 
+# Secret data
+lib/secretdata
+
 # IntelliJ related
 *.iml
 *.ipr
