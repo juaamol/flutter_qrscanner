@@ -9,6 +9,9 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+
+  MapController map = new MapController();
+
   @override
   Widget build(BuildContext context) {
     final ScanModel scan = ModalRoute.of(context).settings.arguments;
@@ -18,7 +21,9 @@ class _MapPageState extends State<MapPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.my_location),
-            onPressed: () {},
+            onPressed: () {
+              map.move(scan.getLatLng(), 15);
+            },
           )
         ],
       ),
@@ -30,8 +35,9 @@ class _MapPageState extends State<MapPage> {
 
   Widget _createFlutterMap(ScanModel scan) {
     return FlutterMap(
+      mapController: map,
       options: MapOptions(center: scan.getLatLng(), zoom: 10),
-      layers: [_createMap()],
+      layers: [_createMap(), _createMarkers(scan)],
     );
   }
 
@@ -45,5 +51,21 @@ class _MapPageState extends State<MapPage> {
         urlTemplate:
             'https://api.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}',
         additionalOptions: additionalOpts);
+  }
+
+  MarkerLayerOptions _createMarkers(ScanModel scan) {
+    return MarkerLayerOptions(markers: <Marker>[
+      Marker(
+          height: 100,
+          width: 100,
+          point: scan.getLatLng(),
+          builder: (context) => Container(
+                child: Icon(
+                  Icons.location_on,
+                  size: 70,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ))
+    ]);
   }
 }
