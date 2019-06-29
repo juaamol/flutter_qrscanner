@@ -38,12 +38,12 @@ class _MapPageState extends State<MapPage> {
   _createMap() {
     Map<String, String> additionalOpts = {
       'accessToken': SecretData.mapBoxApi,
-      'id': 'mapbox.street'
+      'id': 'mapbox.streets'
     };
 
     return TileLayerOptions(
         urlTemplate:
-            'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}',
+            'https://api.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}',
         additionalOptions: additionalOpts);
   }
 }
