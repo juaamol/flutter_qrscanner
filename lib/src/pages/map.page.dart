@@ -37,13 +37,14 @@ class _MapPageState extends State<MapPage> {
 
   FloatingActionButton _createFloattingButton() {
     return FloatingActionButton(
+      backgroundColor: Theme.of(context).primaryColor,
       onPressed: () {
         actualMapType = (actualMapType + 1) % _mapTypes.length;
         setState(() {
           _createMap();  
         });
       },
-      child: Icon(Icons.repeat, color: Theme.of(context).primaryColor),
+      child: Icon(Icons.repeat,),
     );
   }
 
