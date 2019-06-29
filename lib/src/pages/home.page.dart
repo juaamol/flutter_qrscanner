@@ -69,21 +69,17 @@ class _HomePageState extends State<HomePage> {
   void _scanQR(BuildContext context) async {
     // https://github.com/juaamol/flutter_qrscanner
     // geo:40.714865545932355,-73.96474256953127
-    String futureString = 'https://github.com/juaamol/flutter_qrscanner';
+    String futureString;
 
-    // try {
-    //   futureString = await new QRCodeReader().scan();
-    // } catch(e) {
-    //   futureString = e.toString();
-    // }
+    try {
+      futureString = await new QRCodeReader().scan();
+    } catch (e) {
+      futureString = e.toString();
+    }
 
     if (futureString != null) {
       final newScan = ScanModel(value: futureString);
       scansBloc.addScan(newScan);
-
-      final newScan2 =
-          ScanModel(value: 'geo:40.714865545932355,-73.96474256953127');
-      scansBloc.addScan(newScan2);
 
       if (Platform.isIOS) {
         Future.delayed(Duration(milliseconds: 750), () {
