@@ -2,7 +2,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qrscanner/secretdata/secretdata.dart';
 import 'package:flutter_qrscanner/src/models/scan.model.dart';
-import 'package:latlong/latlong.dart';
 
 class MapPage extends StatefulWidget {
   _MapPageState createState() => _MapPageState();
@@ -11,6 +10,8 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
 
   MapController map = new MapController();
+  final List<String> _mapTypes = ['streets', 'light', 'dark', 'satellite', 'outdoors'];
+  int actualMapType = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,19 @@ class _MapPageState extends State<MapPage> {
       body: Center(
         child: _createFlutterMap(scan),
       ),
+      floatingActionButton: _createFloattingButton(),
+    );
+  }
+
+  FloatingActionButton _createFloattingButton() {
+    return FloatingActionButton(
+      onPressed: () {
+        actualMapType = (actualMapType + 1) % _mapTypes.length;
+        setState(() {
+          _createMap();  
+        });
+      },
+      child: Icon(Icons.repeat, color: Theme.of(context).primaryColor),
     );
   }
 
@@ -44,7 +58,7 @@ class _MapPageState extends State<MapPage> {
   _createMap() {
     Map<String, String> additionalOpts = {
       'accessToken': SecretData.mapBoxApi,
-      'id': 'mapbox.streets'
+      'id': 'mapbox.${_mapTypes[actualMapType]}'
     };
 
     return TileLayerOptions(
